@@ -237,43 +237,6 @@ abstract class HomeActivity : AppBarActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_about -> {
-                val binding = AboutDialogBinding.inflate(LayoutInflater.from(this), null, false)
-                binding.sourceCode.movementMethod = LinkMovementMethod.getInstance()
-                binding.sourceCode.text = getString(
-                    R.string.about_view_source_code,
-                    "<b><a href=\"https://github.com/RikkaApps/Shizuku\">GitHub</a></b>"
-                ).toHtml()
-                binding.icon.setImageBitmap(
-                    AppIconCache.getOrLoadBitmap(
-                        this,
-                        applicationInfo,
-                        Process.myUid() / 100000,
-                        resources.getDimensionPixelOffset(R.dimen.default_app_icon_size)
-                    )
-                )
-                binding.versionName.text = packageManager.getPackageInfo(packageName, 0).versionName
-                MaterialAlertDialogBuilder(this)
-                    .setView(binding.root)
-                    .show()
-                true
-            }
-            R.id.action_stop -> {
-                if (!Shizuku.pingBinder()) {
-                    return true
-                }
-                MaterialAlertDialogBuilder(this)
-                    .setMessage(R.string.dialog_stop_message)
-                    .setPositiveButton(android.R.string.ok) { _: DialogInterface?, _: Int ->
-                        try {
-                            Shizuku.exit()
-                        } catch (e: Throwable) {
-                        }
-                    }
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-                true
-            }
             R.id.action_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 true

@@ -38,9 +38,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var languagePreference: ListPreference
     private lateinit var nightModePreference: IntegerSimpleMenuPreference
     private lateinit var blackNightThemePreference: TwoStatePreference
-    private lateinit var translationPreference: Preference
-    private lateinit var translationContributorsPreference: Preference
     private lateinit var useSystemColorPreference: TwoStatePreference
+    private lateinit var aboutPreference: Preference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val context = requireContext()
@@ -53,9 +52,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         languagePreference = findPreference(KEY_LANGUAGE)!!
         nightModePreference = findPreference(KEY_NIGHT_MODE)!!
         blackNightThemePreference = findPreference(KEY_BLACK_NIGHT_THEME)!!
-        translationPreference = findPreference("translation")!!
-        translationContributorsPreference = findPreference("translation_contributors")!!
         useSystemColorPreference = findPreference(KEY_USE_SYSTEM_COLOR)!!
+        aboutPreference = findPreference("about")!!
 
         languagePreference.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
@@ -111,20 +109,35 @@ class SettingsFragment : PreferenceFragmentCompat() {
             useSystemColorPreference.isVisible = false
         }
 
-        translationPreference.summary =
-            context.getString(R.string.settings_translation_summary, context.getString(R.string.app_name))
-        translationPreference.setOnPreferenceClickListener {
-            CustomTabsHelper.launchUrlOrCopy(context, context.getString(R.string.translation_url))
+        // 设置关于选项
+        aboutPreference.setOnPreferenceClickListener {
+            showAboutDialog()
             true
         }
+    }
 
-        val contributors = context.getString(R.string.translation_contributors).toHtml().toString()
-        if (contributors.isNotBlank()) {
-            translationContributorsPreference.summary = contributors
-        } else {
-            translationContributorsPreference.isVisible = false
-        }
-
+    private fun showAboutDialog() {
+        val context = requireContext()
+        val binding = moe.shizuku.manager.databinding.AboutDialogBinding.inflate(
+            LayoutInflater.from(context), null, false
+        )
+        binding.sourceCode.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+        binding.sourceCode.text = context.getString(
+            moe.shizuku.manager.R.string.about_view_source_code,
+            "<b><a href=\"https://github.com/RikkaApps/Shizuku\">GitHub</a></b>"
+        ).toHtml()
+        binding.icon.setImageBitmap(
+            moe.shizuku.manager.utils.AppIconCache.getOrLoadBitmap(
+                context,
+                context.applicationInfo,
+                android.os.Process.myUid() / 100000,
+                context.resources.getDimensionPixelOffset(moe.shizuku.manager.R.dimen.default_app_icon_size)
+            )
+        )
+        binding.versionName.text = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(context)
+            .setView(binding.root)
+            .show()
     }
 
     override fun onCreateRecyclerView(

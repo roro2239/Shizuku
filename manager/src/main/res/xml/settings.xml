@@ -9,15 +9,6 @@
             android:summary="%s"
             android:title="@string/settings_language" />
 
-        <Preference
-            style="?preferenceInformationStyle"
-            android:key="translation_contributors"
-            android:title="@string/settings_translation_contributors" />
-
-        <Preference
-            android:key="translation"
-            android:title="@string/settings_translation" />
-
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -39,6 +30,14 @@
         <rikka.material.preference.MaterialSwitchPreference
             android:key="use_system_color"
             android:title="@string/settings_use_system_color" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/action_about">
+
+        <Preference
+            android:key="about"
+            android:title="@string/action_about" />
 
     </PreferenceCategory>
 

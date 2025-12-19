@@ -17,9 +17,9 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
 
         private const val ID_STELLAR_STATUS = 0L
         private const val ID_STATUS = 1L
-        private const val ID_APPS = 2L
-        private const val ID_TERMINAL = 3L
-        private const val ID_LEARN_MORE = 6L
+        private const val ID_STOP_SERVICE = 2L
+        private const val ID_APPS = 3L
+        private const val ID_TERMINAL = 4L
         private const val ID_ADB_PERMISSION_LIMITED = 7L
     }
 
@@ -42,6 +42,9 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
         // 添加 Shizuku 服务状态
         addItem(ServerStatusViewHolder.CREATOR, status, ID_STATUS)
 
+        // 添加停止服务卡片
+        addItem(StopServiceViewHolder.CREATOR, status, ID_STOP_SERVICE)
+
         if (adbPermission) {
             addItem(ManageAppsViewHolder.CREATOR, status to grantedCount, ID_APPS)
             addItem(TerminalViewHolder.CREATOR, status, ID_TERMINAL)
@@ -51,7 +54,6 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
             addItem(AdbPermissionLimitedViewHolder.CREATOR, status, ID_ADB_PERMISSION_LIMITED)
         }
 
-        addItem(LearnMoreViewHolder.CREATOR, null, ID_LEARN_MORE)
         notifyDataSetChanged()
     }
 }
