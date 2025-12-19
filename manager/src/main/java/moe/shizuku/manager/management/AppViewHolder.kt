@@ -35,7 +35,6 @@ class AppViewHolder(private val binding: AppListItemBinding) : BaseViewHolder<Pa
     private val name get() = binding.title
     private val pkg get() = binding.summary
     private val switchWidget get() = binding.switchWidget
-    private val root get() = binding.requiresRoot
 
     init {
         itemView.filterTouchesWhenObscured = true
@@ -92,7 +91,6 @@ class AppViewHolder(private val binding: AppListItemBinding) : BaseViewHolder<Pa
         }
         pkg.text = ai.packageName
         switchWidget.isChecked = AuthorizationManager.granted(packageName, uid)
-        root.visibility = if (ai.metaData != null && ai.metaData.getBoolean("moe.shizuku.client.V3_REQUIRES_ROOT")) View.VISIBLE else View.GONE
 
         loadIconJob = AppIconCache.loadIconBitmapAsync(context, ai, ai.uid / 100000, icon)
     }

@@ -1,12 +1,9 @@
 package moe.shizuku.manager.home
 
-import android.os.Build
 import moe.shizuku.manager.management.AppsViewModel
-import moe.shizuku.manager.utils.EnvironmentUtils
 import moe.shizuku.manager.utils.UserHandleCompat
 import rikka.recyclerview.IdBasedRecyclerViewAdapter
 import rikka.recyclerview.IndexCreatorPool
-import rikka.shizuku.Shizuku
 
 class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: AppsViewModel) :
     IdBasedRecyclerViewAdapter(ArrayList()) {
@@ -18,12 +15,10 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
 
     companion object {
 
-        private const val ID_STATUS = 0L
-        private const val ID_APPS = 1L
-        private const val ID_TERMINAL = 2L
-        private const val ID_START_ROOT = 3L
-        private const val ID_START_WADB = 4L
-        private const val ID_START_ADB = 5L
+        private const val ID_STELLAR_STATUS = 0L
+        private const val ID_STATUS = 1L
+        private const val ID_APPS = 2L
+        private const val ID_TERMINAL = 3L
         private const val ID_LEARN_MORE = 6L
         private const val ID_ADB_PERMISSION_LIMITED = 7L
     }
@@ -40,6 +35,11 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
         val isPrimaryUser = UserHandleCompat.myUserId() == 0
 
         clear()
+
+        // 添加 Stellar 服务状态
+        addItem(StellarStatusViewHolder.CREATOR, Unit, ID_STELLAR_STATUS)
+
+        // 添加 Shizuku 服务状态
         addItem(ServerStatusViewHolder.CREATOR, status, ID_STATUS)
 
         if (adbPermission) {
@@ -51,24 +51,6 @@ class HomeAdapter(private val homeModel: HomeViewModel, private val appsModel: A
             addItem(AdbPermissionLimitedViewHolder.CREATOR, status, ID_ADB_PERMISSION_LIMITED)
         }
 
-        if (isPrimaryUser) {
-            val root = EnvironmentUtils.isRooted()
-            val rootRestart = running && status.uid == 0
-
-            if (root) {
-                addItem(StartRootViewHolder.CREATOR, rootRestart, ID_START_ROOT)
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || EnvironmentUtils.getAdbTcpPort() > 0) {
-                addItem(StartWirelessAdbViewHolder.CREATOR, null, ID_START_WADB)
-            }
-
-            addItem(StartAdbViewHolder.CREATOR, null, ID_START_ADB)
-
-            if (!root) {
-                addItem(StartRootViewHolder.CREATOR, rootRestart, ID_START_ROOT)
-            }
-        }
         addItem(LearnMoreViewHolder.CREATOR, null, ID_LEARN_MORE)
         notifyDataSetChanged()
     }

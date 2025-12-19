@@ -25,6 +25,7 @@ public class ShizukuSettings {
     public static final String NIGHT_MODE = "night_mode";
     public static final String LANGUAGE = "language";
     public static final String KEEP_START_ON_BOOT = "start_on_boot";
+    public static final String FOLLOW_STELLAR_STARTUP = "follow_stellar_startup";
 
     private static SharedPreferences sPreferences;
 

@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:key="startup"
-        android:title="@string/settings_startup">
-
-        <rikka.material.preference.MaterialSwitchPreference
-            android:key="start_on_boot"
-            android:summary="@string/settings_start_on_boot_summary"
-            android:title="@string/settings_start_on_boot" />
-
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/settings_language">
 
         <rikka.preference.SimpleMenuPreference

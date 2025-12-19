@@ -23,9 +23,6 @@ class ShizukuApplication : Application() {
             if (Build.VERSION.SDK_INT >= 28) {
                 HiddenApiBypass.setHiddenApiExemptions("")
             }
-            if (atLeast30) {
-                System.loadLibrary("adb")
-            }
         }
     }
 

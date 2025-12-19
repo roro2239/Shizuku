@@ -38,8 +38,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private lateinit var languagePreference: ListPreference
     private lateinit var nightModePreference: IntegerSimpleMenuPreference
     private lateinit var blackNightThemePreference: TwoStatePreference
-    private lateinit var startOnBootPreference: TwoStatePreference
-    private lateinit var startupPreference: PreferenceCategory
     private lateinit var translationPreference: Preference
     private lateinit var translationContributorsPreference: Preference
     private lateinit var useSystemColorPreference: TwoStatePreference
@@ -55,22 +53,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         languagePreference = findPreference(KEY_LANGUAGE)!!
         nightModePreference = findPreference(KEY_NIGHT_MODE)!!
         blackNightThemePreference = findPreference(KEY_BLACK_NIGHT_THEME)!!
-        startOnBootPreference = findPreference(KEEP_START_ON_BOOT)!!
-        startupPreference = findPreference("startup")!!
         translationPreference = findPreference("translation")!!
         translationContributorsPreference = findPreference("translation_contributors")!!
         useSystemColorPreference = findPreference(KEY_USE_SYSTEM_COLOR)!!
 
-        val componentName = ComponentName(context.packageName, BootCompleteReceiver::class.java.name)
-
-        startOnBootPreference.isChecked = context.packageManager.isComponentEnabled(componentName)
-        startOnBootPreference.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
-                if (newValue is Boolean) {
-                    context.packageManager.setComponentEnabled(componentName, newValue)
-                    context.packageManager.isComponentEnabled(componentName) == newValue
-                } else false
-            }
         languagePreference.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _: Preference?, newValue: Any ->
                 if (newValue is String) {
@@ -138,6 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         } else {
             translationContributorsPreference.isVisible = false
         }
+
     }
 
     override fun onCreateRecyclerView(
